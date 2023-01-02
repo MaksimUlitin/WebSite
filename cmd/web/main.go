@@ -8,7 +8,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"path/filepath"
 )
 
 // главная страница
@@ -17,8 +16,8 @@ type neuteredFileSystem struct {
 }
 
 type application struct {
-	infoLog  *log.Logger
 	errorLog *log.Logger
+	infoLog  *log.Logger
 	pageBox  *storage.PageBoxModel
 }
 
@@ -58,6 +57,7 @@ func main() {
 }
 
 // защита от проникновения в директорию к файлам
+/*
 func (nfs neuteredFileSystem) Open(path string) (http.File, error) {
 
 	f, err := nfs.fs.Open(path)
@@ -77,7 +77,7 @@ func (nfs neuteredFileSystem) Open(path string) (http.File, error) {
 	}
 	return f, nil
 }
-
+*/
 func openDB(dsn string) (*sql.DB, error) {
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
