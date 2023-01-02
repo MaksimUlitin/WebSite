@@ -10,7 +10,7 @@ type PageBoxModel struct {
 }
 
 // Insert - Метод для создания новой заметки в базе дынных.
-func (p PageBoxModel) Insert(title, content, expires string) (int, error) {
+func (p *PageBoxModel) Insert(title, content, expires string) (int, error) {
 
 	stmt := `INSERT INTO pageBoxes (title, content, created, expires)
     VALUES(?, ?, UTC_TIMESTAMP(), DATE_ADD(UTC_TIMESTAMP(), INTERVAL ? DAY))`
@@ -29,11 +29,12 @@ func (p PageBoxModel) Insert(title, content, expires string) (int, error) {
 }
 
 // Get - Метод для возвращения данных заметки по её идентификатору ID.
-func (p PageBoxModel) Get(id int) (*models.PageBox, error) {
+func (p *PageBoxModel) Get(id int) (*models.PageBox, error) {
+
 	return nil, nil
 }
 
 // Latest - Метод возвращает 10 наиболее часто используемые заметки.
-func (p PageBoxModel) Lastest() ([]*models.PageBox, error) {
+func (p *PageBoxModel) Lastest() ([]*models.PageBox, error) {
 	return nil, nil
 }

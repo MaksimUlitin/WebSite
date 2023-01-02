@@ -8,15 +8,14 @@ import (
 )
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
-	// проверка url  адреса
-	if r.URL.Path != "/" {
-		http.NotFound(w, r)
-		app.NotFound(w)
+	if r.Method != http.MethodPost {
+		w.Header().Set("Allow", http.MethodPost)
+		app.clientError(w, http.StatusMethodNotAllowed)
 		return
 	}
 
-	title := ""
-	content := ""
+	title := "история про улитку "
+	content := "улитка выползла из раковинв,\n вытянула рожки \n и спрятала из обратно "
 	expires := "7"
 
 	id, err := app.pageBox.Insert(title, content, expires)

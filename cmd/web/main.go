@@ -24,7 +24,7 @@ type application struct {
 
 func main() {
 	addr := flag.String("addr", ":8088", "Сетевой адрес HTTP")
-	dsn := flag.String("dsn", "web:@/pageBox?parseTime=true", "Название MySQL источника данных")
+	dsn := flag.String("dsn", "web:1_Qwertyuiop_2@/pageBox?parseTime=true", "Название MySQL источника данных")
 	flag.Parse()
 
 	// создание инфоЛогов
