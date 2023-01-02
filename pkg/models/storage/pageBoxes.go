@@ -2,6 +2,7 @@ package storage
 
 import (
 	"database/sql"
+	"errors"
 	"github.com/maksimUlitin/pkg/models"
 )
 
@@ -30,8 +31,23 @@ func (p *PageBoxModel) Insert(title, content, expires string) (int, error) {
 
 // Get - Метод для возвращения данных заметки по её идентификатору ID.
 func (p *PageBoxModel) Get(id int) (*models.PageBox, error) {
+	//SQL запрос для получения данных одной записи
+	stmt := `SELECT id,title,content, created, expires FROM pageBoxes
+	WHERE expires > UTC_TIMESTAMP() AND id = ?`
 
-	return nil, nil
+	row := p.DB.QueryRow(stmt, id)
+
+	s := &models.PageBox{}
+
+	err := row.Scan(&s.ID, &s.Title, &s.Content, &s.Created, &s.Expires)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, models.ErrorOnRecord
+		} else {
+			return nil, err
+		}
+	}
+	return s, nil
 }
 
 // Latest - Метод возвращает 10 наиболее часто используемые заметки.

@@ -1,7 +1,9 @@
 package main
 
 import (
+	"errors"
 	"fmt"
+	"github.com/maksimUlitin/pkg/models"
 	"html/template"
 	"net/http"
 	"strconv"
@@ -29,7 +31,7 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	files := []string{
 		"./ui/html/home.page.tmpl",
 		"./ui/html/base.layout.tmpl",
-		"./ui/html/footer.portial.tmpl",
+		"./ui/html/footer.portal.tmpl",
 	}
 
 	tmp, err := template.ParseFiles(files...)
@@ -55,7 +57,17 @@ func (app *application) displayNotes(w http.ResponseWriter, r *http.Request) {
 		app.NotFound(w) //http.NotFound(w, r)
 		return
 	}
-	fmt.Fprintf(w, "отображение заметки под id %d", id)
+	s, err := app.pageBox.Get(id)
+	if err != nil {
+		if errors.Is(err, models.ErrorOnRecord) {
+			app.NotFound(w)
+		} else {
+			app.serverError(w, err)
+		}
+		return
+	}
+	fmt.Fprintf(w, "%v", s)
+	//fmt.Fprintf(w, "отображение заметки под id %d", id)
 
 }
 
